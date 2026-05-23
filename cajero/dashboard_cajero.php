@@ -1,11 +1,11 @@
-PHP
+
 <?php
 session_start();
 
 // Cambiamos 'nombre' por 'usuario' para que coincida con lo que guardaste en el login
 if (!isset($_SESSION['usuario'])) {
-    header("Location: ../index.php");
-    exit();
+    header("Location: ../cajero/dashboard_cajero.php");
+    exit(); 
 }
 ?>
 
