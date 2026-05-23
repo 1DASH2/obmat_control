@@ -16,7 +16,7 @@
     <h3>INICIO DE SESION</h3>
     <p>Introduce tu correo electrónico o nombre y contraseña</p>  
     <form action="modulos/validar_login.php" method="POST">
-        <input type="text" name="usuario" placeholder="email@domain.com/Name" required>
+        <input type="text" name="usuario" placeholder="email@domain.com / Name" required>
         <input type="password" name="password" placeholder="Contraseña" required>
         <button type="submit">Iniciar sesion</button>
     </form>
