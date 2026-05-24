@@ -1,0 +1,42 @@
+/* Estilos Globales */
+body { background-color: #f4f6f9; }
+
+/* Sidebar */
+.sidebar { 
+    background-color: #2b303b; 
+    min-height: 100vh; 
+    padding: 0 !important; 
+}
+
+.logo-box { 
+    width: 100%; 
+    background-color: #0047AB; 
+}
+
+.logo-box img { 
+    width: 100%; 
+    display: block; 
+}
+
+.menu-label { 
+    color: #888; 
+    padding: 20px 20px 10px; 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+}
+
+.nav-link { 
+    color: #fff !important; 
+    padding: 15px 20px !important; 
+}
+
+.nav-link.active, .nav-link:hover { 
+    background: rgba(255,255,255,0.1); 
+}
+
+/* Tarjetas */
+.card { 
+    border-radius: 15px; 
+    border: none; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+}
