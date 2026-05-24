@@ -1,16 +1,23 @@
-
 <?php
 session_start();
 
-// Cambiamos 'nombre' por 'usuario' para que coincida con lo que guardaste en el login
 if (!isset($_SESSION['usuario'])) {
-    header("Location: ../cajero/dashboard_cajero.php");
+    header("Location: ../index.php");
     exit(); 
 }
 ?>
-
-<h1>Panel de Ventas - Cajero</h1>
-<p>Bienvenido al sistema, <?php echo htmlspecialchars($_SESSION['usuario']); ?></p>
-
-<!-- Agrega esto para poder salir -->
-<a href="modulos/logout.php">Cerrar Sesión</a>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Cajero</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <div style="text-align: center; padding: 2rem;">
+        <h1>Panel de Ventas - Cajero</h1>
+        <p>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre'] ?? $_SESSION['usuario']); ?></p>
+        <a href="../modulos/logout.php">Cerrar Sesión</a>
+    </div>
+</body>
+</html>
