@@ -1,9 +1,7 @@
 <?php
 session_start();
-// Aseguramos la conexión
 require_once('../config/conexion.php');
 
-// Verificación de sesión: si no existe, redirigir
 if (!isset($_SESSION['usuario'])) {
     header("Location: ../index.php");
     exit();
@@ -14,48 +12,52 @@ if (!isset($_SESSION['usuario'])) {
 <head>
     <meta charset="UTF-8">
     <title>InkaDigital | Panel Cajero</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
-        <aside class="col-md-2 sidebar bg-dark text-white min-vh-100 p-0">
-            <div class="logo-box">
-                <img src="../img/logoINKADIG.png" alt="InkaDigital" class="img-fluid w-100">
-            </div>
-            <div class="menu-label p-3 text-secondary text-uppercase small">Menú principal</div>
-            <nav class="nav flex-column px-2">
-                <a href="#" class="nav-link text-white active">Inicio</a>
-                <a href="#" class="nav-link text-white">Ventas</a>
-                <a href="#" class="nav-link text-white">Artículos</a>
-            </nav>
-        </aside>
-
-        <main class="col-md-10 bg-light p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>Panel de Ventas - Cajero</h4>
-                <span>Bienvenido, <strong><?php echo htmlspecialchars($_SESSION['usuario']); ?></strong></span>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="card p-4 shadow-sm border-0 rounded-4">
-                        <h5>Nueva Venta</h5>
-                        <p class="text-muted">Inicia una nueva venta escaneando o buscando...</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card p-4 shadow-sm border-0 rounded-4">
-                        <h5>Ventas en espera</h5>
-                        <p class="text-muted">Consulta tus ventas...</p>
-                    </div>
+    <aside class="sidebar">
+        <div class="logo-container">
+            <img src="../img/logoINKADIG.png" alt="InkaDigital" class="sidebar-logo">
+        </div>
+        <span class="menu-title">Menú principal</span>
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active">Inicio</a>
+            <a href="#" class="menu-item">Ventas</a>
+            <a href="#" class="menu-item">Artículos</a>
+        </nav>
+        
+        <div class="sidebar-profile">
+            <div class="profile-flex">
+                <div class="profile-avatar"><i class="icon-user"></i></div>
+                <div class="profile-info">
+                    <span class="profile-name"><?php echo htmlspecialchars($_SESSION['usuario']); ?></span>
+                    <span class="profile-role">Cajero</span>
                 </div>
             </div>
-        </main>
-    </div>
-</div>
+            <a href="../auth/logout.php" class="btn-logout-sidebar">Cerrar Sesión</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div class="welcome-text">
+                <h1>Panel de Ventas</h1>
+                <p>Bienvenido de nuevo, <?php echo htmlspecialchars($_SESSION['usuario']); ?></p>
+            </div>
+        </header>
+
+        <div class="kpi-container">
+            <div class="kpi-card">
+                <div class="kpi-icon-box icon-bg-blue">💰</div>
+                <div class="kpi-content">
+                    <span class="kpi-title">VENTAS HOY</span>
+                    <span class="kpi-value">S/ 1,250.00</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
 </body>
 </html>
