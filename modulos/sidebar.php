@@ -6,28 +6,34 @@
     <span class="menu-title">MENÚ ADMINISTRADOR</span>
 
     <nav class="sidebar-menu">
-        <a href="dashboard_admin.php" class="menu-item active">
-            <i class="fas fa-th-large"></i> Dashboard
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-shopping-cart"></i> Ventas <i class="fas fa-chevron-down arrow"></i>
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-chart-line"></i> Análisis
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-box"></i> Artículos
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-file-alt"></i> Reportes
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-users"></i> Usuarios
-        </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-cog"></i> Configuración
-        </a>
-    </nav>
+    <a href="dashboard_admin.php" class="menu-item">
+        <i class="fas fa-th-large"></i> Dashboard
+    </a>
+
+    <a href="ventas.php" class="menu-item">
+        <i class="fas fa-shopping-cart"></i> Ventas
+    </a>
+
+    <a href="#" class="menu-item">
+        <i class="fas fa-chart-line"></i> Análisis
+    </a>
+
+    <a href="articulos.php" class="menu-item">
+        <i class="fas fa-box"></i> Artículos
+    </a>
+
+    <a href="#" class="menu-item">
+        <i class="fas fa-file-alt"></i> Reportes
+    </a>
+
+    <a href="#" class="menu-item">
+        <i class="fas fa-users"></i> Usuarios
+    </a>
+
+    <a href="#" class="menu-item">
+        <i class="fas fa-cog"></i> Configuración
+    </a>
+</nav>
 
     <div class="sidebar-profile">
         <div class="profile-flex">
