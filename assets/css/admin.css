@@ -32,18 +32,20 @@ body {
 /* Sección del Logo Optimizado */
 .logo-container {
     text-align: center;
-    padding: 0;           /* Eliminamos el padding para que la imagen llene el espacio */
+    padding: 16px;
     margin-bottom: 25px;
     width: 100%;
-    overflow: hidden;     /* Recorta cualquier borde de la imagen que sobresalga */
-    border-radius: 12px;  /* Aplica curvas suaves a las esquinas superiores del bloque */
+    border-radius: 12px;
+    overflow: visible;
 }
 
 .sidebar-logo {
-    width: 100%;          /* Fuerza a la imagen a ocupar el ancho total disponible */
+    width: 100%;
+    max-width: 170px;
     height: auto;
-    display: block;       /* Quita el espacio en blanco fantasma inferior de las imágenes */
-    border-radius: 12px;  /* Redondea las esquinas del logo para integrarse al diseño */
+    display: block;
+    margin: 0 auto;
+    border-radius: 12px;
 }
 
 /* Título de sección */
