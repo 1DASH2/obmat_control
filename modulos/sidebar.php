@@ -6,25 +6,25 @@
     <span class="menu-title">MENÚ ADMINISTRADOR</span>
 
     <nav class="sidebar-menu">
-        <a href="dashboard_admin.php" class="menu-item active">
+        <a href="../admin/dashboard_admin.php" class="menu-item">
             <i class="fas fa-th-large"></i> Dashboard
         </a>
-        <a href="#" class="menu-item">
+        <a href="../admin/ventas.php" class="menu-item">
             <i class="fas fa-shopping-cart"></i> Ventas <i class="fas fa-chevron-down arrow"></i>
         </a>
-        <a href="#" class="menu-item">
+        <a href="../admin/analisis.php" class="menu-item">
             <i class="fas fa-chart-line"></i> Análisis
         </a>
-        <a href="#" class="menu-item">
+        <a href="../admin/articulos.php" class="menu-item">
             <i class="fas fa-box"></i> Artículos
         </a>
-        <a href="#" class="menu-item">
+        <a href="../admin/reportes.php" class="menu-item">
             <i class="fas fa-file-alt"></i> Reportes
         </a>
-        <a href="#" class="menu-item">
+        <a href="../admin/usuarios.php" class="menu-item">
             <i class="fas fa-users"></i> Usuarios
         </a>
-        <a href="#" class="menu-item">
+        <a href="../admin/configuracion.php" class="menu-item">
             <i class="fas fa-cog"></i> Configuración
         </a>
     </nav>
