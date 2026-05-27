@@ -2,7 +2,6 @@
 require_once('../config/conexion.php');
 session_start();
 
-// Cambiar 'nombre' por 'usuario' para que coincida con tu BD
 $usuario = $_POST['usuario'] ?? '';
 $pass = $_POST['password'] ?? '';
 
@@ -14,14 +13,18 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($user = $result->fetch_assoc()) {
-    // Verificar contraseña (sin hash por ahora, pero deberías usar password_hash)
-    if ($pass === $user['password']) {
-        $_SESSION['usuario'] = $user['usuario'];
-        $_SESSION['nombre'] = $user['nombre'];  // guardamos el nombre real "Luis Ramos"
-        $_SESSION['rol'] = $user['rol'];
-        $_SESSION['ultimo_acceso'] = date('d/m/Y - H:i A');
+    //verificar contraseña
+        if ($pass === $user['password']) {
+        session_regenerate_id(true);
         
-        // Redirigir según rol
+        $_SESSION['usuario'] = $user['usuario'];
+        $_SESSION['nombre'] = $user['nombre'];
+        $_SESSION['rol'] = $user['rol'];
+        //asignamos la caja que viene de la base de datos a la sesión
+        $_SESSION['caja'] = $user['caja_asignada']; 
+        
+        $_SESSION['ultimo_acceso'] = date('d/m/Y - H:i A');
+        //redirigir segn rol
         if ($user['rol'] === 'admin') {
             header("Location: ../admin/dashboard_admin.php");
         } else {
@@ -31,7 +34,5 @@ if ($user = $result->fetch_assoc()) {
     } else {
         die("Contraseña incorrecta. <a href='../index.php'>Volver</a>");
     }
-} else {
-    die("Usuario no encontrado. <a href='../index.php'>Volver</a>");
 }
 ?>
