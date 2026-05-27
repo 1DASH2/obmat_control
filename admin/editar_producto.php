@@ -14,16 +14,20 @@ if (!$prod) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// ... dentro de if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
     $precio = floatval($_POST['precio']);
     $stock = intval($_POST['stock']);
     $stock_minimo = intval($_POST['stock_minimo']);
     $categoria = $_POST['categoria'];
-    $descripcion = $_POST['descripcion'];
+    // Eliminamos $descripcion
     
+    // Consulta sin la columna 'descripcion'
+// Fíjate que agregué la 's' extra para la descripción y el campo en la sentencia SQL
     $stmt = $conexion->prepare("UPDATE productos SET nombre=?, precio=?, stock=?, stock_minimo=?, categoria=?, descripcion=? WHERE id=?");
     $stmt->bind_param("sdiissi", $nombre, $precio, $stock, $stock_minimo, $categoria, $descripcion, $id);
     $stmt->execute();
+// ...
     
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $ext = pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION);
@@ -89,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="form-group">
                     <label>Descripción</label>
-                    <textarea name="descripcion" rows="3"><?= htmlspecialchars($prod['descripcion']) ?></textarea>
+                    <textarea name="descripcion" rows="3"><?= htmlspecialchars($prod['descripcion'] ?? '') ?></textarea>
                 </div>
                 <div class="form-group">
                     <label>Imagen</label>

@@ -6,43 +6,66 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
 }
 require_once('../config/conexion.php');
 
-// Eliminar producto
+// Procesar eliminación
 if (isset($_GET['eliminar'])) {
     $id = intval($_GET['eliminar']);
-    $conexion->query("DELETE FROM productos WHERE id = $id");
-    header("Location: articulos.php");
-    exit();
+    $resultado = $conexion->query("UPDATE productos SET estado = 0 WHERE id = $id");
+    
+    if ($resultado) {
+        header("Location: articulos.php?mensaje=eliminado");
+        exit();
+    } else {
+        echo "Error al eliminar: " . $conexion->error;
+        exit();
+    }
 }
 
-// Agregar nuevo producto
+
+
+// --- BLOQUE CORREGIDO DE INSERCIÓN ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
+    // Recibimos los datos básicos
     $nombre = $_POST['nombre'];
     $precio = floatval($_POST['precio']);
     $stock = intval($_POST['stock']);
     $stock_minimo = intval($_POST['stock_minimo']);
     $categoria = $_POST['categoria'];
-    $descripcion = $_POST['descripcion'];
     
-    // Subir imagen (opcional)
     $imagen = 'default.png';
-    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-        $ext = pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION);
-        $nombre_img = uniqid() . '.' . $ext;
-        move_uploaded_file($_FILES['imagen']['tmp_name'], "../assets/img/productos/" . $nombre_img);
-        $imagen = $nombre_img;
-    }
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+            $nombre_archivo = $_FILES['imagen']['name'];
+            $ext = strtolower(pathinfo($nombre_archivo, PATHINFO_EXTENSION));
+            
+            // Validamos que solo sean extensiones de imagen permitidas
+            $extensiones_permitidas = ['jpg', 'jpeg', 'png', 'webp'];
+            
+            if (in_array($ext, $extensiones_permitidas)) {
+                $nombre_img = uniqid() . '.' . $ext;
+                if (move_uploaded_file($_FILES['imagen']['tmp_name'], "../assets/img/productos/" . $nombre_img)) {
+                    $imagen = $nombre_img;
+                }
+            }
+        }
+        
     
-    $stmt = $conexion->prepare("INSERT INTO productos (nombre, precio, stock, stock_minimo, categoria, descripcion, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdiisss", $nombre, $precio, $stock, $stock_minimo, $categoria, $descripcion, $imagen);
-    $stmt->execute();
+    // INSERT ajustado a las columnas reales que mostraste en la imagen (sin descripción)
+    $stmt = $conexion->prepare("INSERT INTO productos (nombre, precio, stock, stock_minimo, categoria, imagen, estado) VALUES (?, ?, ?, ?, ?, ?, 1)");
+    
+    // Vinculamos los parámetros: s=string, d=decimal, i=int
+    $stmt->bind_param("sdiiss", $nombre, $precio, $stock, $stock_minimo, $categoria, $imagen);
+    
+    if ($stmt->execute()) {
+        header("Location: articulos.php");
+        exit();
+    } else {
+        echo "Error al insertar: " . $stmt->error;
+    }
     $stmt->close();
-    header("Location: articulos.php");
-    exit();
 }
 
 // Obtener todos los productos
-$productos = $conexion->query("SELECT * FROM productos ORDER BY nombre")->fetch_all(MYSQLI_ASSOC);
-?>
+// Fíjate bien en el WHERE estado = 1
+$productos = $conexion->query("SELECT * FROM productos WHERE estado = 1 ORDER BY nombre")->fetch_all(MYSQLI_ASSOC);?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -75,17 +98,18 @@ $productos = $conexion->query("SELECT * FROM productos ORDER BY nombre")->fetch_
         <!-- Formulario para agregar producto -->
         <div class="form-agregar">
             <h3>Agregar nuevo producto</h3>
-            <form method="POST" enctype="multipart/form-data">
-                <div class="form-grid">
-                    <input type="text" name="nombre" placeholder="Nombre" required>
-                    <input type="number" step="0.01" name="precio" placeholder="Precio" required>
-                    <input type="number" name="stock" placeholder="Stock" required>
-                    <input type="number" name="stock_minimo" placeholder="Stock mínimo" required>
-                    <input type="text" name="categoria" placeholder="Categoría" required>
-                    <input type="file" name="imagen" accept="image/*">
-                </div>
-                <textarea name="descripcion" placeholder="Descripción" rows="2"></textarea>
-                <button type="submit" name="agregar">Agregar producto</button>
+            <form action="articulos.php" method="POST" enctype="multipart/form-data" class="form-grid">
+                <input type="text" name="nombre" placeholder="Nombre" required>
+                <input type="number" step="0.01" name="precio" placeholder="Precio" required>
+                
+                <input type="number" name="stock" placeholder="Stock" required>
+                <input type="number" name="stock_minimo" placeholder="Stock mínimo" required>
+                
+                <input type="text" name="categoria" placeholder="Categoría">
+                <input type="file" name="imagen">
+                
+                <textarea name="descripcion" placeholder="Descripción" style="grid-column: span 2;"></textarea>
+                <button type="submit" name="agregar" style="grid-column: span 2;">Agregar producto</button>
             </form>
         </div>
 
@@ -98,11 +122,21 @@ $productos = $conexion->query("SELECT * FROM productos ORDER BY nombre")->fetch_
                 <?php foreach ($productos as $p): ?>
                 <tr>
                     <td><?= $p['id'] ?></td>
-                    <td><img src="../assets/img/productos/<?= htmlspecialchars($p['imagen'] ?? 'default.png') ?>" width="40" height="40" style="object-fit: cover; border-radius: 8px;"></td>
+                    
+                    <td>
+                        <?php 
+                        if (!empty($p['imagen']) && $p['imagen'] !== 'default.png' && file_exists("../assets/img/productos/" . $p['imagen'])): ?>
+                            <img src="../assets/img/productos/<?= htmlspecialchars($p['imagen']) ?>" width="40" height="40" style="object-fit: cover; border-radius: 8px;">
+                        <?php else: ?>
+                            <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 8px;">
+                                <i class="fas fa-box" style="color: #94a3b8; font-size: 20px;"></i>
+                            </div>
+                        <?php endif; ?>
+                    </td>
                     <td><?= htmlspecialchars($p['nombre']) ?></td>
                     <td>S/ <?= number_format($p['precio'], 2) ?></td>
                     <td><?= $p['stock'] ?></td>
-                    <td><?= $p['stock_minimo'] ?></td>
+                    <td><?php echo $p['stock_minimo'] ?? 'N/A'; ?></td>
                     <td><?= htmlspecialchars($p['categoria']) ?></td>
                     <td>
                         <a href="editar_producto.php?id=<?= $p['id'] ?>" class="btn-edit">Editar</a>
@@ -113,5 +147,19 @@ $productos = $conexion->query("SELECT * FROM productos ORDER BY nombre")->fetch_
             </tbody>
         </table>
     </main>
+    <?php if (isset($_GET['success'])): ?>
+            <script>
+                alert('Producto agregado correctamente');
+                // Limpia la URL para que no vuelva a salir al actualizar
+                window.history.replaceState({}, document.title, "articulos.php");
+            </script>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] == 'eliminado'): ?>
+            <script>
+                alert('Producto eliminado correctamente');
+                window.history.replaceState({}, document.title, "articulos.php");
+            </script>
+        <?php endif; ?>
 </body>
 </html>
