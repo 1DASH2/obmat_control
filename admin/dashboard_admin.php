@@ -59,7 +59,9 @@ $num_notif = $row_notif['total'] ?? 0;
                 </div>
 
                 <div class="header-icon-wrapper">
-                    <i class="fas fa-cog"></i>
+                    <a href="configuracion.php" title="Ir a configuración del sistema" style="color: inherit; text-decoration: none;">
+                        <i class="fas fa-cog"></i>
+                    </a>
                 </div>
 
                 <div class="header-profile-box" style="display: flex; align-items: center; gap: 10px;">

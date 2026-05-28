@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-05-2026 a las 10:28:34
+-- Tiempo de generación: 28-05-2026 a las 11:13:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -43,6 +43,35 @@ INSERT INTO `categorias` (`id`, `nombre`) VALUES
 (4, 'Higiene'),
 (5, 'Otros'),
 (6, 'Snacks');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `configuracion`
+--
+
+CREATE TABLE `configuracion` (
+  `id` int(11) NOT NULL,
+  `nombre_negocio` varchar(255) DEFAULT NULL,
+  `ruc` varchar(20) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `sitio_web` varchar(100) DEFAULT NULL,
+  `logo_url` varchar(255) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `pais` varchar(5) DEFAULT 'PE',
+  `zona_horaria` varchar(50) DEFAULT 'lima',
+  `moneda` varchar(50) DEFAULT 'Soles',
+  `idioma` varchar(20) DEFAULT 'es'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `configuracion`
+--
+
+INSERT INTO `configuracion` (`id`, `nombre_negocio`, `ruc`, `direccion`, `telefono`, `correo`, `sitio_web`, `logo_url`, `descripcion`, `pais`, `zona_horaria`, `moneda`, `idioma`) VALUES
+(1, 'Minimarket OBMAT', NULL, NULL, NULL, NULL, NULL, NULL, 'Software desarrollado por InkaDigital', 'PE', 'lima', 'Soles', 'es');
 
 -- --------------------------------------------------------
 
@@ -163,7 +192,7 @@ INSERT INTO `productos` (`id`, `nombre`, `precio`, `categoria`, `stock`, `catego
 (6, 'Atún Florida en Aceite 170g', 5.50, 'Abarrotes', 15, 1, 4.20, 'atun.png', 1, 9, NULL),
 (7, 'Mayonesa Alacena 200g', 6.00, 'Abarrotes', 8, 1, 4.50, 'mayonesa.png', 0, 0, NULL),
 (8, 'Salsa de Tomate 200g', 4.50, 'Abarrotes', 12, 1, 3.20, 'salsa.png', 0, 0, NULL),
-(9, 'Papel Higiénico Elite', 8.00, 'Higiene', 6, 4, 5.50, 'papel.png', 1, 0, NULL),
+(9, 'Papel Higiénico Elite', 8.00, 'Higiene', 6, 4, 5.50, 'papel.png', 0, 0, NULL),
 (10, 'Detergente Opal 1kg', 7.50, 'Higiene', 7, 4, 5.80, 'detergente.png', 1, 0, NULL),
 (11, 'papas lays', 8.00, 'snacks', 100, NULL, NULL, 'default.png', 0, 10, NULL);
 
@@ -178,16 +207,18 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(100) NOT NULL,
   `usuario` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `rol` enum('admin','cajero') DEFAULT 'cajero'
+  `rol` enum('admin','cajero') DEFAULT 'cajero',
+  `caja_asignada` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `usuario`, `password`, `rol`) VALUES
-(1, 'Luis Ramos', 'admin', '456LUISRAMOSadmin@obmat/.og', 'admin'),
-(2, 'Jhonatan', 'cajero1', 'c1JHONATAN@456OBMAT', 'cajero');
+INSERT INTO `usuarios` (`id`, `nombre`, `usuario`, `password`, `rol`, `caja_asignada`) VALUES
+(1, 'Luis Ramos', 'admin', '456LUISRAMOSadmin@obmat/.og', 'admin', NULL),
+(2, 'Jhonatan', 'cajero1', 'c1JHONATAN@456OBMAT', '', 'CAJA-01'),
+(3, 'Donaldo', 'cajero2', 'c2T48@MDI/_dldo12', '', 'CAJA-02');
 
 -- --------------------------------------------------------
 
@@ -242,6 +273,12 @@ ALTER TABLE `categorias`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `configuracion`
+--
+ALTER TABLE `configuracion`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `detalle_ventas`
 --
 ALTER TABLE `detalle_ventas`
@@ -291,6 +328,12 @@ ALTER TABLE `categorias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT de la tabla `configuracion`
+--
+ALTER TABLE `configuracion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `detalle_ventas`
 --
 ALTER TABLE `detalle_ventas`
@@ -318,7 +361,7 @@ ALTER TABLE `productos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
