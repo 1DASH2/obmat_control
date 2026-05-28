@@ -1,1 +1,5 @@
 config/conexion.php
+# Ignorar carpetas temporales
+/temp/
+/logs/
+.DS_Store

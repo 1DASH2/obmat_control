@@ -10,7 +10,9 @@
             <i class="fas fa-th-large"></i> Dashboard
         </a>
         <a href="../admin/ventas.php" class="menu-item">
-            <i class="fas fa-shopping-cart"></i> Ventas <i class="fas fa-chevron-down arrow"></i>
+            <i class="fas fa-shopping-cart"></i> Ventas
+        </a>
+        
         </a>
         <a href="../admin/analisis.php" class="menu-item">
             <i class="fas fa-chart-line"></i> Análisis
@@ -47,5 +49,6 @@
             <span><?php echo $_SESSION['ultimo_acceso'] ?? date('d/m/Y - H:i A'); ?></span>
         </div>
         <a href="../modulos/logout.php" class="btn-logout-sidebar"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+    
     </div>
 </div>
