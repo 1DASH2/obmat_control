@@ -2,19 +2,17 @@
 session_start();
 require_once('../config/conexion.php');
 
-// 1. Verificación de acceso
 $rol = $_SESSION['rol'] ?? '';
-if ($rol !== 'cajero 1' && $rol !== 'cajero 2') {
+if ($rol !== 'cajero1' && $rol !== 'cajero2') {
     header("Location:../index.php");
     exit();
 }
 
-// 2. Consulta de estado de caja
 $query_estado = "SELECT caja_activa, caja_abierta FROM estado_caja WHERE id = 1";
 $res_estado = $conexion->query($query_estado);
 $estado = $res_estado->fetch_assoc();
 
-// 3. Bloqueo de seguridad: Si la caja está cerrada, detenemos la carga del HTML
+//bloqueo de seguridad: Si la caja está cerrada, detenemos la carga del HTML
 if (!$estado || $estado['caja_activa'] == 0) {
     die("<h1>La caja no está disponible en este momento.</h1>");
 }
@@ -32,11 +30,10 @@ if ($estado['caja_abierta'] == 0) {
     </div>");
 }
 
-// 4. Si llegamos aquí, la caja está abierta. Calculamos KPIs.
 $id_cajero = $_SESSION['id_usuario'] ?? 0;
 $ventas_dia = 0;
 
-// Consulta de ventas (asegúrate de que la tabla 'ventas' exista)
+// Consulta de ventas
 $query_ventas = "SELECT SUM(total) as total_dia FROM ventas WHERE DATE(fecha) = CURDATE() AND id_cajero = ?";
 $stmt = $conexion->prepare($query_ventas);
 if ($stmt) {

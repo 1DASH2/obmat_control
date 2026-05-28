@@ -12,9 +12,10 @@ $stmt->bind_param("s", $usuario);
 $stmt->execute();
 $result = $stmt->get_result();
 
+
 if ($user = $result->fetch_assoc()) {
     //verificar contraseña
-        if ($pass === $user['password']) {
+        if (password_verify($pass, $user['password'])) {
         session_regenerate_id(true);
         
         $_SESSION['usuario'] = $user['usuario'];
