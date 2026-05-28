@@ -30,27 +30,41 @@ if ($estado['caja_abierta'] == 0) {
     </div>");
 }
 
-$id_cajero = $_SESSION['id_usuario'] ?? 0;
+$usuario_sesion = $_SESSION['usuario'] ?? '';
 $ventas_dia = 0;
+$total_ventas = 0;
+$promedio_ventas = 0;
 
-// Consulta de ventas
-$query_ventas = "SELECT SUM(total) as total_dia FROM ventas WHERE DATE(fecha) = CURDATE() AND id_cajero = ?";
+$query_ventas = "
+    SELECT 
+        COUNT(*) as total_ventas,
+        SUM(v.total) as total_dia,
+        AVG(v.total) as promedio
+    FROM ventas v
+    INNER JOIN usuarios u ON v.usuario_id = u.id
+    WHERE DATE(v.fecha) = CURDATE() AND u.usuario = ?
+";
 $stmt = $conexion->prepare($query_ventas);
 if ($stmt) {
-    $stmt->bind_param("i", $id_cajero);
+    $stmt->bind_param("s", $usuario_sesion);
     $stmt->execute();
     $res_ventas = $stmt->get_result()->fetch_assoc();
+    $total_ventas = $res_ventas['total_ventas'] ?? 0;
     $ventas_dia = $res_ventas['total_dia'] ?? 0;
+    $promedio_ventas = $res_ventas['promedio'] ?? 0;
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>InkaDigital | Panel Cajero</title>
     <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
+
 <body>
 
     <aside class="sidebar">
@@ -68,34 +82,37 @@ if ($stmt) {
             <div class="profile-info">
                 <span class="profile-name"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
                 <span class="profile-role">
-                    <?php echo htmlspecialchars($_SESSION['rol']); ?> - 
+                    <?php echo htmlspecialchars($_SESSION['rol']); ?> -
                     <?php echo htmlspecialchars($_SESSION['caja']); ?>
                 </span>
             </div>
         </div>
-        
+
         <div class="sidebar-profile">
             <div class="profile-flex">
                 <div class="profile-avatar"><i class="icon-user"></i></div>
-                <div class="profile-info">      
+                <div class="profile-info">
                 </div>
             </div>
             <a href="../modulos/logout.php" class="btn-logout-sidebar">Cerrar Sesión</a>
         </div>
 
-        
+
 
     </aside>
 
     <main class="main-content">
         <header class="dashboard-header">
-            <div class="welcome-box" style="background: #ffffff; padding: 25px; border-radius: 15px; border: 1px solid #e0e0e0; display: flex; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <div class="welcome-box"
+                style="background: #ffffff; padding: 25px; border-radius: 15px; border: 1px solid #e0e0e0; display: flex; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                 <span style="font-size: 30px">🛒</span>
             </div>
 
             <div style="flex-grow: 1; margin-left: 20px;">
-                <h2 style="margin: 0; color: #333;">Bienvenido de nuevo, <?php echo htmlspecialchars($_SESSION['nombre']); ?>!</h2>
-                <p style="margin: 5px 0; color: #666; font-weight: 500;">Estás trabajando en <?php echo htmlspecialchars($_SESSION['caja']); ?></p>
+                <h2 style="margin: 0; color: #333;">Bienvenido de nuevo,
+                    <?php echo htmlspecialchars($_SESSION['nombre']); ?>!</h2>
+                <p style="margin: 5px 0; color: #666; font-weight: 500;">Estás trabajando en
+                    <?php echo htmlspecialchars($_SESSION['caja']); ?></p>
                 <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
                 <div style="color: #999; font-size: 0.9em;">
                     <span id="reloj">Cargando fecha...</span>
@@ -103,22 +120,38 @@ if ($stmt) {
             </div>
 
             <script>
-            function actualizarReloj() {
-                const ahora = new Date();
-                const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-                document.getElementById('reloj').textContent = '📅 ' + ahora.toLocaleDateString('es-ES', opciones);
-            }
-            actualizarReloj();
-            setInterval(actualizarReloj, 60000); // Se actualiza cada minuto
+                function actualizarReloj() {
+                    const ahora = new Date();
+                    const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    document.getElementById('reloj').textContent = '📅 ' + ahora.toLocaleDateString('es-ES', opciones);
+                }
+                actualizarReloj();
+                setInterval(actualizarReloj, 60000); // Se actualiza cada minuto
             </script>
         </header>
 
         <div class="kpi-container">
             <div class="kpi-card">
-                <div class="kpi-icon-box icon-bg-blue">💰</div>
+                <div class="kpi-icon-box icon-bg-blue">🧾</div>
                 <div class="kpi-content">
-                    <span class="kpi-title">VENTAS HOY</span>
+                    <span class="kpi-title">VENTAS REALIZADAS</span>
+                    <span class="kpi-value"><?php echo $total_ventas; ?></span>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon-box icon-bg-green">💰</div>
+                <div class="kpi-content">
+                    <span class="kpi-title">TOTAL VENDIDO HOY</span>
                     <span class="kpi-value">S/ <?php echo number_format($ventas_dia, 2); ?></span>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-icon-box icon-bg-orange">📊</div>
+                <div class="kpi-content">
+                    <span class="kpi-title">PROMEDIO POR VENTA</span>
+                    <span class="kpi-value">S/ <?php echo number_format($promedio_ventas, 2); ?></span>
                 </div>
             </div>
         </div>
@@ -126,4 +159,5 @@ if ($stmt) {
     </main>
 
 </body>
+
 </html>
