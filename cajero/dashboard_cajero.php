@@ -62,7 +62,7 @@ if ($stmt) {
 <head>
     <meta charset="UTF-8">
     <title>InkaDigital | Panel Cajero</title>
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../assets/css/cajero.css">
 </head>
 
 <body>
@@ -104,21 +104,21 @@ if ($stmt) {
     <main class="main-content">
         <header class="dashboard-header">
             <div class="welcome-box"
-                style="background: #ffffff; padding: 25px; border-radius: 15px; border: 1px solid #e0e0e0; display: flex; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                <span style="font-size: 30px">🛒</span>
-            </div>
-
-            <div style="flex-grow: 1; margin-left: 20px;">
-                <h2 style="margin: 0; color: #333;">Bienvenido de nuevo,
-                    <?php echo htmlspecialchars($_SESSION['nombre']); ?>!</h2>
-                <p style="margin: 5px 0; color: #666; font-weight: 500;">Estás trabajando en
-                    <?php echo htmlspecialchars($_SESSION['caja']); ?></p>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
-                <div style="color: #999; font-size: 0.9em;">
-                    <span id="reloj">Cargando fecha...</span>
+                style="background: #ffffff; padding: 30px; border-radius: 15px; border: 1px solid #e0e0e0; display: flex; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <div class="kpi-icon-box icon-bg-blue welcome-icon">🖥️</div>
+                <div style="flex-grow: 1; margin-left: 20px;">
+                    <h2 style="margin: 0; color: #333;">Bienvenido de nuevo,
+                        <?php echo htmlspecialchars($_SESSION['nombre']); ?>!
+                    </h2>
+                    <p style="margin: 5px 0; color: #666; font-weight: 500;">Estás trabajando en
+                        <?php echo htmlspecialchars($_SESSION['caja']); ?>
+                    </p>
+                    <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
+                    <div style="color: #999; font-size: 0.9em;">
+                        <span id="reloj">Cargando fecha...</span>
+                    </div>
                 </div>
             </div>
-
             <script>
                 function actualizarReloj() {
                     const ahora = new Date();
@@ -129,6 +129,15 @@ if ($stmt) {
                 setInterval(actualizarReloj, 60000); // Se actualiza cada minuto
             </script>
         </header>
+
+        <a href="nueva_venta.php" class="kpi-card nueva-venta-card">
+            <div class="kpi-icon-box icon-bg-blue">🛒</div>
+            <div class="kpi-content">
+                <span class="nueva-venta-titulo">Nueva venta</span>
+                <p class="nueva-venta-desc">Inicia una nueva venta buscando productos</p>
+            </div>
+            <span class="nueva-venta-flecha">--></span>
+        </a>
 
         <div class="kpi-container">
             <div class="kpi-card">
