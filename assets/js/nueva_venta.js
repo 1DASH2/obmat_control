@@ -16,7 +16,7 @@ buscador.addEventListener('input', function () {
             } else {
                 listaResultados.innerHTML = productos.map(p => `
                     <div class="item-resultado" onclick="agregarAlCarrito(${p.id}, '${escapar(p.nombre)}', ${p.precio}, '${escapar(p.imagen)}')">
-                        <img src="../${p.imagen || 'img/sin-imagen.png'}" onerror="this.src='../img/sin-imagen.png'">
+                        <span style="font-size:28px;">🛍️</span>
                         <div class="info-producto">
                             <div class="nombre">${p.nombre}</div>
                             <div class="precio">S/ ${parseFloat(p.precio).toFixed(2)} | Stock: ${p.stock}</div>
@@ -57,7 +57,7 @@ function renderCarrito() {
             <tr>
                 <td>
                     <div style="display:flex;align-items:center;gap:10px;">
-                        <img src="../${p.imagen || 'img/sin-imagen.png'}" onerror="this.src='../img/sin-imagen.png'" style="width:36px;height:36px;object-fit:cover;border-radius:6px;">
+                        <span style="font-size:28px;">🛍️</span>
                         <span style="font-weight:600;">${p.nombre}</span>
                     </div>
                 </td>
