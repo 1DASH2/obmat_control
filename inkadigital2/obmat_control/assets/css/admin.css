@@ -1960,5 +1960,68 @@ textarea {
     text-align: center;
 }
 
+.kpi-container-grid { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.kpi-card { 
+    background: white; padding: 20px; border-radius: 12px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;
+}
+.kpi-card h3 { font-size: 12px; color: #666; margin: 0; }
+.kpi-card p { font-size: 18px; font-weight: 700; margin: 5px 0 0; }
+.kpi-card.secondary { border-top: 4px solid #2563eb; }
 
+/* Contenedor principal */
+.kpi-container-grid { display: flex; flex-direction: column; gap: 20px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
+/* Estilo base de la tarjeta */
+.kpi-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+.kpi-card:hover { transform: translateY(-5px); }
+.kpi-card i { font-size: 24px; padding: 15px; border-radius: 12px; }
+.kpi-card h3 { margin: 0; font-size: 0.85rem; color: #64748b; }
+.kpi-card p { margin: 5px 0 0 0; font-size: 1.25rem; font-weight: 700; color: #1e293b; }
+
+/* Colores para cada tarjeta */
+.card-ventas i { background: #dbeafe; color: #2563eb; }
+.card-ganancia i { background: #dcfce7; color: #16a34a; }
+.card-margen i { background: #fef3c7; color: #d97706; }
+.card-transacciones i { background: #ede9fe; color: #7c3aed; }
+.card-ticket i { background: #ffedd5; color: #ea580c; }
+.card-clientes i { background: #fce7f3; color: #db2777; }
+.card-productos i { background: #e0f2fe; color: #0891b2; }
+.card-devoluciones i { background: #fee2e2; color: #dc2626; }
+
+/* Contenedor del gráfico */
+.chart-container {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    margin-top: 30px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    height: 350px;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.chart-container h3 {
+    margin: 0 0 20px 0;
+    font-size: 1.1rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+    .chart-container { height: 250px; }
+}

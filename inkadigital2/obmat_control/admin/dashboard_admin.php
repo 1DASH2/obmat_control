@@ -72,7 +72,10 @@ $num_notif = $row_notif['total'] ?? 0;
             </div>
         </header>
 
-        <?php include('../modulos/kpi_cards.php'); ?>
+        <?php 
+        $tipo_reporte = 'hoy'; // Forzamos el reporte diario
+        include('../modulos/kpi_cards.php'); 
+        ?>
 
         <div class="dashboard-grid-middle">
             <?php include('../modulos/chart_ventas.php'); ?>
