@@ -122,7 +122,6 @@ if ($rol !== 'cajero1' && $rol !== 'cajero2') {
                 <button class="metodo-btn" onclick="seleccionarMetodo('efectivo', this)">💵 Efectivo</button>
                 <button class="metodo-btn" onclick="seleccionarMetodo('tarjeta', this)">💳 Tarjeta</button>
                 <button class="metodo-btn" onclick="seleccionarMetodo('yape', this)">📱 Yape</button>
-                <button class="metodo-btn" onclick="seleccionarMetodo('plin', this)">📲 Plin</button>
             </div>
             <div class="modal-botones">
                 <button class="btn-modal-cancelar" onclick="cerrarModalPago()">Cancelar</button>

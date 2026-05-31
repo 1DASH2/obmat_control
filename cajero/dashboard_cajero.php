@@ -73,9 +73,11 @@ if ($stmt) {
         </div>
         <span class="menu-title">Menú principal</span>
         <nav class="sidebar-menu">
-            <a href="#" class="menu-item active">Inicio</a>
-            <a href="#" class="menu-item">Ventas</a>
-            <a href="#" class="menu-item">Artículos</a>
+            <nav class="sidebar-menu">
+                <a href="dashboard_cajero.php" class="menu-item active">Inicio</a>
+                <a href="nueva_venta.php" class="menu-item">Ventas</a>
+                <a href="articulos.php" class="menu-item">Artículos</a>
+            </nav>
         </nav>
 
         <div class="sidebar-profile">

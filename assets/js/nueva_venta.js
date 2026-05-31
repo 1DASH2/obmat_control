@@ -141,7 +141,17 @@ function seleccionarMetodo(metodo, btn) {
     document.getElementById('btn-confirmar').disabled = false;
 }
 
+let procesando = false;
+
 function confirmarVenta() {
+    if (procesando) return;
+    procesando = true;
+
+    if (!metodoPago) {
+        alert('Por favor selecciona un método de pago');
+        procesando = false;
+        return;
+    }
     const descPct = parseFloat(document.getElementById('descuento-input').value) || 0;
     fetch('procesar_venta.php', {
         method: 'POST',
@@ -151,16 +161,20 @@ function confirmarVenta() {
     .then(r => r.json())
     .then(res => {
         if (res.success) {
-            alert('✅ Venta registrada correctamente');
-            cerrarModalPago();
-            cancelarVenta();
-        } else {
-            alert('❌ Error: ' + res.mensaje);
-        }
+    cerrarModalPago();
+    carrito = [];
+    document.getElementById('descuento-input').value = 0;
+    renderCarrito();
+    
+    // Mostrar mensaje sin alert
+    const msg = document.createElement('div');
+    msg.textContent = '✅ Venta registrada correctamente';
+    msg.style.cssText = 'position:fixed;top:20px;right:20px;background:#16a34a;color:#fff;padding:15px 25px;border-radius:10px;font-weight:600;z-index:999;';
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 3000);
+}
+    })
+    .finally(() => {
+        procesando = false;
     });
 }
-
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'F4') { e.preventDefault(); cancelarVenta(); }
-    if (e.key === 'F9' && carrito.length > 0) { e.preventDefault(); abrirModalPago(); }
-});
