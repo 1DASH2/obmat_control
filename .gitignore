@@ -3,3 +3,4 @@ config/conexion.php
 /temp/
 /logs/
 .DS_Store
+resetear_pass.php
